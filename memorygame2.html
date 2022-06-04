@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Memory game-2</title>
+    <style media="screen">
+      .grid2x2{
+        display: grid;
+        grid-template-columns: 2fr 2fr;
+        grid-template-rows:300px 300px;
+      }
+      .grid3x3{
+        display: grid;
+        grid-template-columns: 2fr 2fr 2fr;
+        grid-template-rows:300px 300px 300px;
+      }
+      .grid4x4{
+        display: grid;
+        grid-template-columns: 2fr 2fr 2fr 2fr;
+        grid-template-rows:300px 300px 300px 300px;
+      }
+        .box{
+          border:2px solid black;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+    </div>
+
+    <script type="text/javascript">
+      window.onload=function(){
+        function getBox(){
+          return `<div class="box"></div>`
+        }
+        function draw(numboxes){
+          let html="";
+          document.querySelector(".container").classList.add(map.get(level));
+          for(let i=0;i<numboxes;i++){
+              html+=getBox()
+          }
+          document.querySelector(".container").innerHTML=html;
+        }
+        draw((level+1)**2);
+      }
+
+      let level=1;
+      const map =new Map();
+      map.set(1,"grid2x2")
+      map.set(2,"grid3x3")
+      map.set(3,"grid4x4")
+
+    </script>
+  </body>
+</html>
