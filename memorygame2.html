@@ -22,34 +22,94 @@
         .box{
           border:2px solid black;
         }
+        .red{
+          background:red;
+        }
     </style>
   </head>
   <body>
     <div class="container">
     </div>
 
-    <script type="text/javascript">
+    <script>
       window.onload=function(){
-        function getBox(){
-          return `<div class="box"></div>`
+        function makebox(id){
+          return{
+            closed:true,
+            id,
+            setColor(color){
+              this.color=color
+            },
+            open(){
+              this.closed=false;
+            }
+          }
         }
-        function draw(numboxes){
+
+        const boxes=[]
+
+        function loadBoxes(numBoxes){
+          for(let i=0;i<numBoxes;i++)
+          boxes[i]=makebox(i);
+        }
+
+        function applyColor(){
+          return Math.floor(Math.random() * 4) % 2;
+        }
+
+        function colorBoxes(){
+          for(let box of boxes){
+            if(applyColor())
+              box.setColor("red")
+          }
+          if( !colored() )
+            colorBoxes()
+        }
+
+        function getBox(box){
+          return `<div id="${box.id}" class="${ box.color? box.color:""} box" ></div>`
+        }
+
+        function start(){
+          loadBoxes(4)
+          colorBoxes()
+          draw()
+          toggleColor(3000)
+          console.log(boxes);
+        }
+
+        function draw(){
           let html="";
           document.querySelector(".container").classList.add(map.get(level));
-          for(let i=0;i<numboxes;i++){
-              html+=getBox()
+          for(let box of boxes){
+              html+=getBox(box)
           }
           document.querySelector(".container").innerHTML=html;
         }
-        draw((level+1)**2);
-      }
 
+        function colored(){
+          for(let box of boxes){
+            if(box.color)
+              return true;
+          }
+          return false;
+        }
+        start();
+
+      function toggleColor(duration){
+        setTimeout (function() {
+          let redBoxes=document.querySelectorAll(".red")
+          for(let box of redBoxes){
+            box.classList.remove("red")
+          }
+        },duration)
+      }
+      }
       let level=1;
       const map =new Map();
       map.set(1,"grid2x2")
       map.set(2,"grid3x3")
       map.set(3,"grid4x4")
-
     </script>
   </body>
 </html>
